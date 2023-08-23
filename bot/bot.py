@@ -1,6 +1,8 @@
 import datetime
+
 import requests
 
+from bot.eltiempoes_scrapper import search_wind_velocity_in_samil_in_eltiempoes, ScrappingError
 from bot.telegram_api import TelegramAPI
 from urllib import parse
 
@@ -8,6 +10,7 @@ from urllib import parse
 def run(telegram_api: TelegramAPI, today: datetime.datetime):
     # everyday
     send_random_wikipedia_articles(telegram_api)
+    send_go_fly_the_kite_message(telegram_api)
 
     # each even week on mondays
     is_monday = today.weekday() == 0
@@ -52,6 +55,18 @@ def get_random_links_from_wikipedia():
         link = f"https://en.wikipedia.org/wiki/{title}"
         links.append(link)
     return links
+
+
+# TODO unit test
+def send_go_fly_the_kite_message(telegram_api):
+    try:
+        today_wind_velocity = search_wind_velocity_in_samil_in_eltiempoes()
+        moderate_wind_velocity = 12.
+        if today_wind_velocity > moderate_wind_velocity:
+            message = f"Hoy es buen día para volar la cometa (velocidad del viento = {today_wind_velocity} km/h)"
+            telegram_api.send_message(chat_id="506901938", message=message)
+    except ScrappingError:
+        return
 
 
 def is_even_week(today):
