@@ -2,7 +2,7 @@ import datetime
 
 import requests
 
-from bot.eltiempoes_scrapper import search_wind_velocity_in_samil_in_eltiempoes, ScrappingError
+from bot.wind_velocity_scrapper import search_wind_velocity_in_samil_in_wisuki, ScrappingError
 from bot.telegram_api import TelegramAPI
 from urllib import parse
 
@@ -14,15 +14,15 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
 
     # each even week on mondays
     is_monday = today.weekday() == 0
-    if is_monday and is_even_week(today):
+    if is_monday:
         telegram_api.send_message(
             chat_id="-965755935",
-            message="Buenos días compañeros! esta semana toca reunirse de nuevo!",
+            message="Buenos días compañeros! el rol vive la lucha sigue!!!",
         )
         telegram_api.send_poll(
             chat_id="-965755935",
-            question="¿Qué día tenéis hueco?",
-            options=["Lunes", "Martes", "Miércoles", "Jueves", "Sábado", "Domingo"],
+            question="¿Qué noche tenéis hueco?",
+            options=["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"],
         )
 
 
@@ -60,7 +60,7 @@ def get_random_links_from_wikipedia():
 # TODO unit test
 def send_go_fly_the_kite_message(telegram_api):
     try:
-        today_wind_velocity = search_wind_velocity_in_samil_in_eltiempoes()
+        today_wind_velocity = search_wind_velocity_in_samil_in_wisuki()
         moderate_wind_velocity = 12.
         if today_wind_velocity > moderate_wind_velocity:
             message = f"Hoy es buen día para volar la cometa (velocidad del viento = {today_wind_velocity} km/h)"
