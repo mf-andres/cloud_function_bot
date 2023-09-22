@@ -2,7 +2,7 @@ import datetime
 
 import requests
 
-from bot.wind_velocity_scrapper import search_wind_velocity_in_samil_in_wisuki, ScrappingError
+from bot.weather_info_retriever import get_weather_forecast
 from bot.telegram_api import TelegramAPI
 from urllib import parse
 
@@ -10,7 +10,7 @@ from urllib import parse
 def run(telegram_api: TelegramAPI, today: datetime.datetime):
     # everyday
     send_random_wikipedia_articles(telegram_api)
-    send_go_fly_the_kite_message(telegram_api)
+    send_weather_messages(telegram_api)
 
     # each even week on mondays
     is_monday = today.weekday() == 0
@@ -57,15 +57,22 @@ def get_random_links_from_wikipedia():
     return links
 
 
-# TODO unit test
-def send_go_fly_the_kite_message(telegram_api):
+def send_weather_messages(telegram_api):
     try:
-        today_wind_velocity = search_wind_velocity_in_samil_in_wisuki()
-        moderate_wind_velocity = 12.
-        if today_wind_velocity > moderate_wind_velocity:
-            message = f"Hoy es buen día para volar la cometa (velocidad del viento = {today_wind_velocity} km/h)"
+        weather_forecast = get_weather_forecast()
+        if weather_forecast["is_going_to_rain_today"]:
+            message = "Hoxe chove! seica é mellor que leves o paraugas."
             telegram_api.send_message(chat_id="506901938", message=message)
-    except ScrappingError:
+        if weather_forecast["is_going_to_be_windy_today"]:
+            message = "Habrá buen viento hoy! Ideal para volar la cometa!"
+            telegram_api.send_message(chat_id="506901938", message=message)
+        if weather_forecast["is_going_to_rain_tomorrow"]:
+            message = "Seica chove mañana!"
+            telegram_api.send_message(chat_id="506901938", message=message)
+        if weather_forecast["is_going_to_be_windy_tomorrow"]:
+            message = "Parece que mañana hará viento."
+            telegram_api.send_message(chat_id="506901938", message=message)
+    except Exception:
         return
 
 
