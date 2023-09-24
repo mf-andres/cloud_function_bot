@@ -12,17 +12,23 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
     send_random_wikipedia_articles(telegram_api)
     send_weather_messages(telegram_api)
 
-    # each even week on mondays
+    is_sunday = today.weekday() == 6
+    if is_sunday:
+        telegram_api.send_message(
+            chat_id="-965755935",
+            message="Reminder! Mañana rol a las 21:00.",
+        )
+
     is_monday = today.weekday() == 0
     if is_monday:
         telegram_api.send_message(
             chat_id="-965755935",
-            message="Buenos días compañeros! el rol vive la lucha sigue!!!",
+            message="Hoy rol a las 21:00. ¿Alguna baja?",
         )
         telegram_api.send_poll(
             chat_id="-965755935",
-            question="¿Qué noche tenéis hueco?",
-            options=["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"],
+            question="Hoy rol a las 21:00. Confirmen asistencia!",
+            options=["Confirmo asistencia", "Me surgió un compromiso"],
         )
 
 
