@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 import requests
 
@@ -66,6 +67,7 @@ def get_random_links_from_wikipedia():
 def send_weather_messages(telegram_api):
     try:
         weather_forecast = get_weather_forecast()
+        logging.info(f"weather_forecast: {weather_forecast}")
         if weather_forecast["is_going_to_rain_today"]:
             message = "Hoxe chove! seica é mellor que leves o paraugas."
             telegram_api.send_message(chat_id="506901938", message=message)
@@ -78,7 +80,8 @@ def send_weather_messages(telegram_api):
         if weather_forecast["is_going_to_be_windy_tomorrow"]:
             message = "Parece que mañana hará viento."
             telegram_api.send_message(chat_id="506901938", message=message)
-    except Exception:
+    except Exception as e:
+        logging.error(e)
         return
 
 

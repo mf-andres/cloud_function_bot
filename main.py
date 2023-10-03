@@ -1,7 +1,7 @@
+import logging
 from bot import bot
 from bot.telegram_api import TelegramAPI
 import functions_framework
-import os
 import datetime
 
 
@@ -16,6 +16,7 @@ def manage(request):
         Response object using `make_response`
         <https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response>.
     """
+    logging.basicConfig(level=logging.INFO)
     telegram_api = TelegramAPI()
     today = datetime.datetime.today()
     bot.run(telegram_api, today)

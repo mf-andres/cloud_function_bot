@@ -19,6 +19,7 @@ def get_weather_forecast(today):
     api_response = requests.get(url, params=params)
     weather_data = api_response.json()
 
+    logging.info(f"weather data: {weather_data}")
     today_weather_variables = weather_data["features"][0]["properties"]["days"][0][
         "variables"
     ]
@@ -46,21 +47,24 @@ def is_going_to_rain(variables):
         variable for variable in variables if variable["name"] == "precipitation_amount"
     ][0]
     rain_values = rain_variable["values"]
+    rain_values = [value["value"] for value in rain_values]
+    logging.info(f"rain values: {rain_values}")
     is_going_to_rain = any(
-        [True for value in rain_values if value["value"] >= STRONG_RAIN_VALUE]
+        [True for value in rain_values if value >= STRONG_RAIN_VALUE]
     )
     return is_going_to_rain
 
 
 def is_going_to_be_windy(variables):
-    STRONG_WIND_VALUE = 11
+    STRONG_WIND_VALUE = 10
     wind_variable = [variable for variable in variables if variable["name"] == "wind"][
         0
     ]
     wind_values = wind_variable["values"]
-    print(wind_values)
+    wind_values = [value["moduleValue"] for value in wind_values]
+    logging.info(f"wind values: {wind_values}")
     is_going_to_be_windy = any(
-        [True for value in wind_values if value["moduleValue"] >= STRONG_WIND_VALUE]
+        [True for value in wind_values if value >= STRONG_WIND_VALUE]
     )
     return is_going_to_be_windy
 
@@ -68,4 +72,5 @@ def is_going_to_be_windy(variables):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     today = datetime.datetime.today()
-    get_weather_forecast(today)
+    weather_forecast = get_weather_forecast(today)
+    print(weather_forecast)

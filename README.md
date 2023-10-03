@@ -1,3 +1,9 @@
+# Setting env variables in powershell
+
+```
+$env:METEOSIX_API_KEY = 'añidlhfoñadl'
+```
+
 # Create or deploy cloud function
 
 ```
