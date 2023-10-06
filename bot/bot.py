@@ -11,7 +11,7 @@ from urllib import parse
 def run(telegram_api: TelegramAPI, today: datetime.datetime):
     # everyday
     send_random_wikipedia_articles(telegram_api)
-    send_weather_messages(telegram_api)
+    send_weather_messages(telegram_api, today)
 
     is_sunday = today.weekday() == 6
     if is_sunday:
@@ -64,9 +64,9 @@ def get_random_links_from_wikipedia():
     return links
 
 
-def send_weather_messages(telegram_api):
+def send_weather_messages(telegram_api, today):
     try:
-        weather_forecast = get_weather_forecast()
+        weather_forecast = get_weather_forecast(today)
         logging.info(f"weather_forecast: {weather_forecast}")
         if weather_forecast["is_going_to_rain_today"]:
             message = "Hoxe chove! seica é mellor que leves o paraugas."
