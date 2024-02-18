@@ -13,15 +13,15 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
     send_random_wikipedia_articles(telegram_api)
     send_weather_messages(telegram_api)
 
-    is_sunday = today.weekday() == 6
-    if is_sunday:
+    is_saturday = today.weekday() == 5
+    if is_saturday:
         telegram_api.send_message(
             chat_id="-965755935",
             message="Reminder! Mañana rol a las 21:00.",
         )
 
-    is_monday = today.weekday() == 0
-    if is_monday:
+    is_sunday = today.weekday() == 6
+    if is_sunday:
         telegram_api.send_message(
             chat_id="-965755935",
             message="Hoy rol a las 21:00. ¿Alguna baja?",
@@ -47,7 +47,7 @@ def get_random_links_from_wikipedia():
         "action": "query",
         "format": "json",
         "list": "random",
-        "rnlimit": 5,  # Number of random pages to retrieve
+        "rnlimit": 1,  # Number of random pages to retrieve
         "rnnamespace": 0,  # Only retrieve pages in the main namespace
     }
     response = requests.get(url, params=params)
@@ -69,16 +69,13 @@ def send_weather_messages(telegram_api):
         weather_forecast = get_weather_forecast()
         logging.info(f"weather_forecast: {weather_forecast}")
         if weather_forecast["is_going_to_rain_today"]:
-            message = "Hoxe chove! seica é mellor que leves o paraugas."
+            message = "Hoxe chove!"
             telegram_api.send_message(chat_id="506901938", message=message)
         if weather_forecast["is_going_to_be_windy_today"]:
-            message = "Habrá buen viento hoy! Ideal para volar la cometa!"
+            message = "Hoy hay viento!"
             telegram_api.send_message(chat_id="506901938", message=message)
         if weather_forecast["is_going_to_rain_tomorrow"]:
             message = "Seica chove mañana!"
-            telegram_api.send_message(chat_id="506901938", message=message)
-        if weather_forecast["is_going_to_be_windy_tomorrow"]:
-            message = "Parece que mañana hará viento."
             telegram_api.send_message(chat_id="506901938", message=message)
     except Exception as e:
         logging.error(e)

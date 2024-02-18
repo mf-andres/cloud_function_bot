@@ -42,7 +42,7 @@ def get_weather_forecast(today):
 
 
 def is_going_to_rain(variables):
-    STRONG_RAIN_VALUE = 7.5
+    STRONG_RAIN_VALUE = 3.5
     rain_variable = [
         variable for variable in variables if variable["name"] == "precipitation_amount"
     ][0]
