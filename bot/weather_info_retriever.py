@@ -1,6 +1,7 @@
 import datetime
 import os
 import logging
+import statistics
 import requests
 
 api_key = os.getenv("METEOSIX_API_KEY")
@@ -11,15 +12,15 @@ def get_weather_forecast(today):
     tomorrow = today + datetime.timedelta(days=1)
     tomorrow.replace(hour=23, minute=59, second=59, microsecond=0)
     params = {
-        "coords": "-8.775869,42.210547",
+        "coords": "-8.70,42.20",
         "startTime": today.strftime("%Y-%m-%dT%H:%M:%S"),
         "endTime": tomorrow.strftime("%Y-%m-%dT%H:%M:%S"),
         "API_KEY": api_key,
     }
     api_response = requests.get(url, params=params)
     weather_data = api_response.json()
-
     logging.info(f"weather data: {weather_data}")
+
     today_weather_variables = weather_data["features"][0]["properties"]["days"][0][
         "variables"
     ]
@@ -27,16 +28,29 @@ def get_weather_forecast(today):
         "variables"
     ]
 
+    is_going_to_rain_today, today_rain_values = is_going_to_rain(
+        today_weather_variables
+    )
+    is_going_to_rain_tomorrow, tomorrow_rain_values = is_going_to_rain(
+        tomorrow_weather_variables
+    )
+    is_going_to_be_windy_today, today_wind_values = is_going_to_be_windy(
+        today_weather_variables
+    )
+    is_going_to_be_windy_tomorrow, tomorrow_wind_values = is_going_to_be_windy(
+        tomorrow_weather_variables
+    )
+
     weather_forecast = {
-        "is_going_to_rain_today": is_going_to_rain(today_weather_variables),
-        "is_going_to_rain_tomorrow": is_going_to_rain(tomorrow_weather_variables),
-        "is_going_to_be_windy_today": is_going_to_be_windy(today_weather_variables),
-        "is_going_to_be_windy_tomorrow": is_going_to_be_windy(
-            tomorrow_weather_variables
-        ),
+        "is_going_to_rain_today": is_going_to_rain_today,
+        "is_going_to_rain_tomorrow": is_going_to_rain_tomorrow,
+        "is_going_to_be_windy_today": is_going_to_be_windy_today,
+        "is_going_to_be_windy_tomorrow": is_going_to_be_windy_tomorrow,
+        "avg_rain_tomorrow": statistics.mean(tomorrow_rain_values),
+        "avg_wind_tomorrow": statistics.mean(tomorrow_wind_values),
     }
-    print(weather_forecast)
-    return weather_forecast
+    logging.info(weather_forecast)
+    return weather_forecast, weather_data
     # TODO mensaje para cuando haya niebla
     # TODO mensaje para cuando nieve
 
@@ -52,7 +66,7 @@ def is_going_to_rain(variables):
     is_going_to_rain = any(
         [True for value in rain_values if value >= STRONG_RAIN_VALUE]
     )
-    return is_going_to_rain
+    return is_going_to_rain, rain_values
 
 
 def is_going_to_be_windy(variables):
@@ -66,11 +80,10 @@ def is_going_to_be_windy(variables):
     is_going_to_be_windy = any(
         [True for value in wind_values if value >= STRONG_WIND_VALUE]
     )
-    return is_going_to_be_windy
+    return is_going_to_be_windy, wind_values
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     today = datetime.datetime.today()
     weather_forecast = get_weather_forecast(today)
-    print(weather_forecast)
