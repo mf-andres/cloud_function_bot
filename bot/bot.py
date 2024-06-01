@@ -51,10 +51,12 @@ def send_weather_messages(telegram_api, today):
         weather_forecast = get_weather_forecast(today)
         logging.debug(f"weather_forecast: {weather_forecast}")
         telegram_api.send_message(
-            chat_id="506901938", message=f"tomorrow rain {weather_forecast["tomorrow_rain_values"]}"
+            chat_id="506901938",
+            message=f"rain tomorrow: {weather_forecast['avg_rain_tomorrow']}",
         )
         telegram_api.send_message(
-            chat_id="506901938", message=f"tomorrow rain {weather_forecast["tomorrow_wind_values"]}"
+            chat_id="506901938",
+            message=f"wind force tomorrow: {weather_forecast['avg_wind_tomorrow']}",
         )
         if weather_forecast["is_going_to_rain_today"]:
             message = "Hoxe chove!"
@@ -73,3 +75,9 @@ def send_weather_messages(telegram_api, today):
 def is_even_week(today):
     week_number = today.isocalendar()[1]
     return week_number % 2 == 0
+
+
+if __name__ == "__main__":
+    telegram_api = TelegramAPI()
+    today = datetime.datetime.today()
+    run(telegram_api, today)

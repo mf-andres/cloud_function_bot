@@ -50,7 +50,7 @@ def get_weather_forecast(today):
         "avg_wind_tomorrow": statistics.mean(tomorrow_wind_values),
     }
     logging.info(weather_forecast)
-    return weather_forecast, weather_data
+    return weather_forecast
     # TODO mensaje para cuando haya niebla
     # TODO mensaje para cuando nieve
 
