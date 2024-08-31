@@ -1,7 +1,8 @@
 import datetime
 import logging
 
-from bot.wikipedia_info_retriever import get_random_links_from_wikipedia
+from bot.development_links_retriever import get_development_links
+from bot.wikipedia_info_retriever import get_random_link_from_wikipedia
 from bot.weather_info_retriever import get_weather_forecast
 from bot.telegram_api import TelegramAPI
 
@@ -19,56 +20,47 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
         )
     is_saturday = today.weekday() == 5
     if is_saturday:
-        telegram_api.send_message(
-            chat_id="-965755935",
-            message="Reminder! Mañana rol a las 21:00.",
-        )
-
-    is_sunday = today.weekday() == 6
-    if is_sunday:
-        telegram_api.send_message(
-            chat_id="-965755935",
-            message="Hoy rol a las 21:00. ¿Alguna baja?",
-        )
         telegram_api.send_poll(
             chat_id="-965755935",
-            question="Confirmen asistencia!",
-            options=["Confirmo asistencia", "No confirmo asistencia"],
+            question="¿Quedamos?",
+            options=[
+                "OK!, Domingo 21:00",
+                "Venga!, Lunes 21:00",
+                "Sí, Martes 21:00",
+                "No, sry",
+            ],
+        )
+    is_first_day_of_odd_month = today.day == 1 and today.month % 2 == 1
+    if is_first_day_of_odd_month:
+        links = get_development_links()
+        telegram_api.send_message(
+            chat_id="506901938",
+            message=links,
         )
 
 
 def send_random_wikipedia_articles(telegram_api):
-    links = get_random_links_from_wikipedia()
+    links = get_random_link_from_wikipedia()
     links = [links[0]]  # Return only one link
-    message = "Random Wikipedia links of the day:\n\n"
+    message = "Random Wikipedia link of the day:\n"
     for i, link in enumerate(links):
-        message += f"{i} - {link}\n"
+        message += f"{i} - {link['link']}\n"
     telegram_api.send_message(chat_id="506901938", message=message)
 
 
 def send_weather_messages(telegram_api, today):
     try:
         weather_forecast = get_weather_forecast(today)
-        logging.debug(f"weather_forecast: {weather_forecast}")
+        logging.debug(f"Weather_forecast: {weather_forecast}")
         telegram_api.send_message(
             chat_id="506901938",
-            message=f"rain tomorrow: {weather_forecast['avg_rain_tomorrow']}",
+            message=f"""
+            Rain today: {weather_forecast['avg_rain_today']}-{weather_forecast['max_rain_today']}"
+            Wind today: {weather_forecast['avg_wind_today']}-{weather_forecast['max_wind_today']}"
+            """,
         )
-        telegram_api.send_message(
-            chat_id="506901938",
-            message=f"wind force tomorrow: {weather_forecast['avg_wind_tomorrow']}",
-        )
-        if weather_forecast["is_going_to_rain_today"]:
-            message = "Hoxe chove!"
-            telegram_api.send_message(chat_id="506901938", message=message)
-        if weather_forecast["is_going_to_be_windy_today"]:
-            message = "Hoy hay viento!"
-            telegram_api.send_message(chat_id="506901938", message=message)
-        if weather_forecast["is_going_to_rain_tomorrow"]:
-            message = "Seica chove mañana!"
-            telegram_api.send_message(chat_id="506901938", message=message)
     except Exception as e:
-        logging.error(e)
+        logging.exception(e)
         return
 
 
@@ -79,5 +71,5 @@ def is_even_week(today):
 
 if __name__ == "__main__":
     telegram_api = TelegramAPI()
-    today = datetime.datetime.today()
+    today = august_first = datetime.datetime(datetime.datetime.now().year, 8, 1)
     run(telegram_api, today)

@@ -46,8 +46,10 @@ def get_weather_forecast(today):
         "is_going_to_rain_tomorrow": is_going_to_rain_tomorrow,
         "is_going_to_be_windy_today": is_going_to_be_windy_today,
         "is_going_to_be_windy_tomorrow": is_going_to_be_windy_tomorrow,
-        "avg_rain_tomorrow": statistics.mean(tomorrow_rain_values),
-        "avg_wind_tomorrow": statistics.mean(tomorrow_wind_values),
+        "avg_rain_today": statistics.mean(today_rain_values),
+        "avg_wind_today": statistics.mean(today_wind_values),
+        "max_rain_today": max(today_rain_values),
+        "max_wind_today": max(today_wind_values),
     }
     logging.info(weather_forecast)
     return weather_forecast

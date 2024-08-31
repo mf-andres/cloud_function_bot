@@ -5,7 +5,7 @@ from urllib import parse
 import requests
 
 
-def get_random_links_from_wikipedia():
+def get_random_link_from_wikipedia():
     url = "https://en.wikipedia.org/w/api.php"
     params = {
         "action": "query",
@@ -57,5 +57,5 @@ def get_page_views(title):
 
 
 if __name__ == "__main__":
-    random_links = get_random_links_from_wikipedia()
+    random_links = get_random_link_from_wikipedia()
     print(random_links)
