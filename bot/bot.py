@@ -55,8 +55,8 @@ def send_weather_messages(telegram_api, today):
         telegram_api.send_message(
             chat_id="506901938",
             message=f"""
-            Rain today: {weather_forecast['avg_rain_today']}-{weather_forecast['max_rain_today']}"
-            Wind today: {weather_forecast['avg_wind_today']}-{weather_forecast['max_wind_today']}"
+            Rain today: {weather_forecast['avg_rain_today']:.2f}-{weather_forecast['max_rain_today']:.2f}"
+            Wind today: {weather_forecast['avg_wind_today']:.2f}-{weather_forecast['max_wind_today']:.2f}"
             """,
         )
     except Exception as e:

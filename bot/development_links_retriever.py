@@ -16,11 +16,20 @@ def get_development_links():
     GDP per capita growth:
     https://data.worldbank.org/indicator/NY.GDP.PCAP.KD.ZG?locations=ES
 
-    GDP inflation:
-    https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=ES
+    Government debt
+    https://www.bde.es/webbe/en/estadisticas/temas/administraciones-publicas.html
 
-    GDP unemployment:
-    https://data.worldbank.org/indicator/SL.UEM.TOTL.ZS?locations=ES
+    Inflation:
+    https://tradingeconomics.com/spain/inflation-cpi
+
+    Unemployment:
+    https://tradingeconomics.com/spain/unemployment-rate
+
+    Wages:
+    https://tradingeconomics.com/spain/wage-growth
+
+    Housing index:
+    https://tradingeconomics.com/spain/housing-index
 
     GINI:
     https://data.worldbank.org/indicator/GC.DOD.TOTL.GD.ZS?locations=ES&start=1990
