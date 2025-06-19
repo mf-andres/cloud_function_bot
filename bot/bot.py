@@ -37,6 +37,12 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
             chat_id="506901938",
             message=links,
         )
+    is_odd_day = today.day % 2 == 1
+    if is_odd_day:
+        telegram_api.send_message(
+            chat_id="-1001811303682",
+            message="Usemos el stepper!",
+        )
 
 
 def send_random_wikipedia_articles(telegram_api):
