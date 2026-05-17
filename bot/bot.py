@@ -18,17 +18,35 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
             chat_id="506901938",
             message="No te olvides de leer",
         )
+    is_friday = today.weekday() == 4
+    if is_friday:
+        telegram_api.send_message(
+            chat_id="506901938",
+            message="No te olvides de leer",
+        )
     is_saturday = today.weekday() == 5
     if is_saturday:
         telegram_api.send_poll(
             chat_id="-965755935",
             question="¿Quedamos?",
             options=[
-                "OK!, Domingo 21:00",
-                "Venga!, Lunes 21:00",
-                "Sí, Martes 21:00",
+                "OK!, Domingo 21:30",
+                "Venga!, Lunes 21:30",
+                "Sí, Martes 21:30",
                 "No, sry",
             ],
+        )
+    is_day_7_or_21 = today.day in [7, 21]
+    if is_day_7_or_21:
+        telegram_api.send_message(
+            chat_id="506901938",
+            message="Checkout venues and rol profiles on insta",
+        )
+    is_day_14 = today.day == 14
+    if is_day_14:
+        telegram_api.send_message(
+            chat_id="506901938",
+            message="https://hoxe.vigo.org/axenda/?lang=cas",
         )
     is_first_day_of_odd_month = today.day == 1 and today.month % 2 == 1
     if is_first_day_of_odd_month:
@@ -37,6 +55,7 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
             chat_id="506901938",
             message=links,
         )
+
     is_odd_day = today.day % 2 == 1
     if is_odd_day:
         telegram_api.send_message(

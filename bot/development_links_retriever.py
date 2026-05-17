@@ -5,16 +5,7 @@ def get_development_links():
     https://www.nasdaq.com/market-activity/index/ndx
 
     GDP:
-    https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?locations=ES
-
-    GDP growth:
-    https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=ES
-
-    GDP per capita:
-    https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?locations=ES
-
-    GDP per capita growth:
-    https://data.worldbank.org/indicator/NY.GDP.PCAP.KD.ZG?locations=ES
+    https://datosmacro.expansion.com/pib/espana
 
     Government debt
     https://www.bde.es/webbe/en/estadisticas/temas/administraciones-publicas.html
@@ -32,15 +23,15 @@ def get_development_links():
     https://tradingeconomics.com/spain/housing-index
 
     GINI:
-    https://data.worldbank.org/indicator/GC.DOD.TOTL.GD.ZS?locations=ES&start=1990
+    https://datosmacro.expansion.com/demografia/indice-gini/espana
+
+    Population:
+    https://datosmacro.expansion.com/demografia/poblacion/espana
 
     ## World development
 
     Literacy rate:
-    https://data.worldbank.org/indicator/SE.ADT.LITR.ZS
-
-    Mortality rate:
-    https://data.worldbank.org/indicator/SH.DYN.MORT
+    https://worldpopulationreview.com/country-rankings/literacy-rate-by-country
 
     Internet use rate:
     https://data.worldbank.org/indicator/IT.NET.USER.ZS

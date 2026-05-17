@@ -1,7 +1,7 @@
 # Setting env variables in powershell
 
 ```
-$env:METEOSIX_API_KEY = 'añidlhfoñadl'
+$env:NAME= 'VALUE'
 ```
 
 # Create or deploy cloud function
@@ -9,7 +9,7 @@ $env:METEOSIX_API_KEY = 'añidlhfoñadl'
 ```
 gcloud functions deploy chuinibot ^
 --region=europe-west6 ^
---runtime=python39 ^
+--runtime=python312 ^
 --source=. ^
 --entry-point=manage ^
 --trigger-http
