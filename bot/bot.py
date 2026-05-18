@@ -18,12 +18,6 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
             chat_id="506901938",
             message="No te olvides de leer",
         )
-    is_friday = today.weekday() == 4
-    if is_friday:
-        telegram_api.send_message(
-            chat_id="506901938",
-            message="No te olvides de leer",
-        )
     is_saturday = today.weekday() == 5
     if is_saturday:
         telegram_api.send_poll(
@@ -40,7 +34,7 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
     if is_day_7_or_21:
         telegram_api.send_message(
             chat_id="506901938",
-            message="Checkout venues and rol profiles on insta",
+            message="Checkout venues and rol events",
         )
     is_day_14 = today.day == 14
     if is_day_14:
@@ -54,13 +48,6 @@ def run(telegram_api: TelegramAPI, today: datetime.datetime):
         telegram_api.send_message(
             chat_id="506901938",
             message=links,
-        )
-
-    is_odd_day = today.day % 2 == 1
-    if is_odd_day:
-        telegram_api.send_message(
-            chat_id="-1001811303682",
-            message="Usemos el stepper!",
         )
 
 
@@ -77,13 +64,20 @@ def send_weather_messages(telegram_api, today):
     try:
         weather_forecast = get_weather_forecast(today)
         logging.debug(f"Weather_forecast: {weather_forecast}")
-        telegram_api.send_message(
-            chat_id="506901938",
-            message=f"""
-            Rain today: {weather_forecast['avg_rain_today']:.2f}-{weather_forecast['max_rain_today']:.2f}"
-            Wind today: {weather_forecast['avg_wind_today']:.2f}-{weather_forecast['max_wind_today']:.2f}"
-            """,
-        )
+        if weather_forecast["is_going_to_rain_today"]:
+            telegram_api.send_message(
+                chat_id="506901938",
+                message=f"""
+                Rain today: {weather_forecast['avg_rain_today']:.2f}-{weather_forecast['max_rain_today']:.2f}
+                """,
+            )
+        if weather_forecast["is_going_to_rain_tomorrow"]:
+            telegram_api.send_message(
+                chat_id="506901938",
+                message=f"""
+                Rain tomorrow: {weather_forecast['avg_rain_tomorrow']:.2f}-{weather_forecast['max_rain_tomorrow']:.2f}
+                """,
+            )
     except Exception as e:
         logging.exception(e)
         return

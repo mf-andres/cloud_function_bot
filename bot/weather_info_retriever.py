@@ -38,6 +38,8 @@ def get_weather_forecast(today):
         "is_going_to_rain_tomorrow": is_going_to_rain_tomorrow,
         "avg_rain_today": statistics.mean(today_rain_values) if today_rain_values else 0,
         "max_rain_today": max(today_rain_values) if today_rain_values else 0,
+        "avg_rain_tomorrow": statistics.mean(tomorrow_rain_values) if tomorrow_rain_values else 0,
+        "max_rain_tomorrow": max(tomorrow_rain_values) if tomorrow_rain_values else 0,
     }
     
     logging.info(weather_forecast)
